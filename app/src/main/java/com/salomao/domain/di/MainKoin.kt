@@ -2,10 +2,7 @@ package com.salomao.domain.di
 
 import android.app.Application
 import com.salomao.domain.builder.createOkHttpClient
-import com.salomao.domain.provider.CoroutineContextProvider
-import com.salomao.domain.provider.CoroutineContextProviderImpl
-import com.salomao.domain.provider.StringProvider
-import com.salomao.domain.provider.StringProviderImpl
+import com.salomao.domain.provider.*
 import okhttp3.OkHttpClient
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.with
@@ -35,4 +32,5 @@ private val contextModule = module {
 
 private val providerModule = module {
     single<StringProvider> { StringProviderImpl(androidContext()) }
+    single<DrawableProvider> { DrawableProviderImpl(androidContext()) }
 }
