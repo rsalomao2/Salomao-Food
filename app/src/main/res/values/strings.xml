@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">Salomao</string>
+    <string name="h_place_search">Place name</string>
+
+    <!--ERROR-->
+    <string name="e_ops">Ops</string>
+    <string name="e_no_place_found">We didn`t found any place with this specification</string>
 </resources>
 

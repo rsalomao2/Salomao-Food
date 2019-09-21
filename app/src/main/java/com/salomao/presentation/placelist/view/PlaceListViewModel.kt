@@ -23,6 +23,7 @@ class PlaceListViewModel(
     val navToSecond = MutableLiveData<Event<Boolean>>()
     val errorMessage = MutableLiveData<Event<String>>()
     val showLoading = mutableLiveData(false)
+    val showList = mutableLiveData(false)
     val hideKeyBoard = mutableLiveData(false)
 
     fun loadPlaceList() {
@@ -37,8 +38,12 @@ class PlaceListViewModel(
             when (val result = repository.loadPlaceFromQuery(query)) {
                 is Status.Success -> {
                     placeList.value = Event(result.response)
+                    showList.value = placeList.value?.peekContent()?.isNotEmpty()
                 }
-                is Status.Error -> Event(result.responseError)
+                is Status.Error -> {
+                    Event(result.responseError)
+                    showList.value = false
+                }
             }
             showLoading.value = false
         }

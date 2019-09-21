@@ -61,16 +61,16 @@ class PlaceAdapter(
             binding.ratinBar.rating = place.rate
             binding.container.setOnClickListener { onItemClick(place) }
         }
-
-    }
-
-    private fun getDrawableId(priceRange: Int): Int {
-        return when (priceRange) {
-            1 -> R.drawable.ic_no_image
-            2 -> R.drawable.ic_no_image
-            3 -> R.drawable.ic_no_image
-            4 -> R.drawable.ic_no_image
-            else -> R.drawable.ic_no_image
+        private fun getDrawableId(priceRange: Int): Int {
+            return when (priceRange) {
+                1 -> R.drawable.ic_no_image
+                2 -> R.drawable.ic_no_image
+                3 -> R.drawable.ic_no_image
+                4 -> R.drawable.ic_no_image
+                else -> R.drawable.ic_no_image
+            }
         }
     }
+
+
 }
