@@ -1,11 +1,11 @@
-package com.salomao.di
+package com.salomao.domain.di
 
 import android.app.Application
-import com.salomao.builder.createOkHttpClient
-import com.salomao.provider.CoroutineContextProvider
-import com.salomao.provider.CoroutineContextProviderImpl
-import com.salomao.provider.StringProvider
-import com.salomao.provider.StringProviderImpl
+import com.salomao.domain.builder.createOkHttpClient
+import com.salomao.domain.provider.CoroutineContextProvider
+import com.salomao.domain.provider.CoroutineContextProviderImpl
+import com.salomao.domain.provider.StringProvider
+import com.salomao.domain.provider.StringProviderImpl
 import okhttp3.OkHttpClient
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.with

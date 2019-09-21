@@ -1,4 +1,4 @@
-package com.salomao.builder
+package com.salomao.domain.builder
 
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import okhttp3.OkHttpClient

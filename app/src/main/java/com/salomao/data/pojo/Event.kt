@@ -1,4 +1,4 @@
-package com.salomao.pojo
+package com.salomao.data.pojo
 
 open class Event<out T>(private val content: T) {
 

@@ -1,4 +1,4 @@
-package com.salomao.provider
+package com.salomao.domain.provider
 
 import kotlinx.coroutines.Dispatchers
 import kotlin.coroutines.CoroutineContext

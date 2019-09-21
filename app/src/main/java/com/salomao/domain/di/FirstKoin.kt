@@ -1,6 +1,6 @@
-package com.salomao.di
+package com.salomao.domain.di
 
-import com.salomao.first.view.FirstViewModel
+import com.salomao.presentation.placelist.view.PlaceListViewModel
 import org.koin.android.viewmodel.ext.koin.viewModel
 import org.koin.dsl.module.Module
 import org.koin.dsl.module.module
@@ -15,5 +15,5 @@ private val loadKoinModule by lazy {
 }
 
 private val viewModelModule: Module = module {
-    viewModel { FirstViewModel() }
+    viewModel { PlaceListViewModel() }
 }

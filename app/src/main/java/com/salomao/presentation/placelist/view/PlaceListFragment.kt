@@ -1,4 +1,4 @@
-package com.salomao.first.view
+package com.salomao.presentation.placelist.view
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,23 +8,23 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.salomao.R
-import com.salomao.databinding.FragmentFirstBinding
-import com.salomao.di.injectFirstKoin
-import com.salomao.extention.observeEventNotHandled
+import com.salomao.databinding.FragmentPlaceListBinding
+import com.salomao.domain.di.injectFirstKoin
+import com.salomao.domain.extention.observeEventNotHandled
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class FirstFragment : Fragment() {
+class PlaceListFragment : Fragment() {
 
-    private val viewModel by viewModel<FirstViewModel>()
+    private val viewModel by viewModel<PlaceListViewModel>()
 
-    private lateinit var binding:FragmentFirstBinding
+    private lateinit var binding:FragmentPlaceListBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         injectFirstKoin()
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_first, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_place_list, container, false)
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 

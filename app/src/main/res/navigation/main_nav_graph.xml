@@ -7,16 +7,16 @@
 
     <fragment
         android:id="@+id/firstFragment"
-        android:name="com.salomao.first.view.FirstFragment"
+        android:name="com.salomao.presentation.placelist.view.PlaceListFragment"
         android:label="fragment_first"
-        tools:layout="@layout/fragment_first" >
+        tools:layout="@layout/fragment_place_list" >
         <action
             android:id="@+id/action_firstFragment_to_secondFragment"
             app:destination="@id/secondFragment" />
     </fragment>
     <fragment
         android:id="@+id/secondFragment"
-        android:name="com.salomao.second.SecondFragment"
+        android:name="com.salomao.presentation.placedetail.PlaceDetailFragment"
         android:label="fragment_second"
         tools:layout="@layout/fragment_second" />
 </navigation>

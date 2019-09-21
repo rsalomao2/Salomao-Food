@@ -1,4 +1,4 @@
-package com.salomao.second
+package com.salomao.presentation.placedetail
 
 
 import android.os.Bundle
@@ -8,7 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.salomao.R
 
-class SecondFragment : Fragment() {
+class PlaceDetailFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

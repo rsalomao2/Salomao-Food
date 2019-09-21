@@ -1,10 +1,10 @@
-package com.salomao.first.view
+package com.salomao.presentation.placelist.view
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.salomao.pojo.Event
+import com.salomao.data.pojo.Event
 
-class FirstViewModel: ViewModel() {
+class PlaceListViewModel: ViewModel() {
 
     val navToSecond = MutableLiveData<Event<Boolean>>()
 
