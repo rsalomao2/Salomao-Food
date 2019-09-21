@@ -1,5 +1,8 @@
 package com.salomao.presentation.placelist.view
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -26,10 +29,13 @@ class PlaceListFragment : Fragment() {
     private val viewModel by viewModel<PlaceListViewModel>()
     private val drawableProvider by inject<DrawableProvider>()
 
-    private lateinit var binding: FragmentPlaceListBinding
     private val placeAdapter by lazy {
         PlaceAdapter(drawableProvider, viewModel.onItemClick)
     }
+    companion object{
+        const val PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1
+    }
+    private lateinit var binding: FragmentPlaceListBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,13 +54,14 @@ class PlaceListFragment : Fragment() {
         setRecycleView()
         setListeners()
         setObservers()
+        viewModel.loadPlaceFromGpsLocation()
     }
 
     private fun setListeners() {
         binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 query?.let {
-                    viewModel.loadPlaceFromQuery(it)
+                    viewModel.loadPlacesFromQuery(it)
                 }
                 return true
             }
@@ -70,6 +77,34 @@ class PlaceListFragment : Fragment() {
         setOnPlaceClickObserver()
         setErrorMessageObserver()
         setKeyBoardHideObserver()
+        setGpsPermissionDeniedObserver()
+    }
+
+    private fun setGpsPermissionDeniedObserver() {
+        viewModel.isGpsDenied.observeEventNotHandled(this) {
+            getLocationPermission()
+        }
+    }
+
+    private fun getLocationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            requestPermissions(
+                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION
+            )
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int,
+                                            permissions: Array<String>,
+                                            grantResults: IntArray) {
+        when (requestCode) {
+            PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    viewModel.loadPlaceFromGpsLocation()
+                }
+            }
+        }
     }
 
     private fun setKeyBoardHideObserver() {

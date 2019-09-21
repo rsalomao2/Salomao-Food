@@ -8,4 +8,10 @@ import retrofit2.http.Query
 interface PlaceService {
     @GET("api/$ZOMATO_API_VERSION/search")
     suspend fun getPlacesByQueryAsync(@Query("q") query: String): PlaceResponseDto
+
+    @GET("api/$ZOMATO_API_VERSION/search")
+    suspend fun getPlacesByLatLngAsync(
+        @Query("lat") lat: Double,
+        @Query("lon") lng: Double
+    ): PlaceResponseDto
 }

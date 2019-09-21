@@ -25,7 +25,17 @@ class PlaceRepositoryImpl(
             }
         }
 
-    override suspend fun loadPlaceFromLocation(latlng: LatLng): Status<List<Place>> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    override suspend fun loadPlaceFromLocation(latLng: LatLng): Status<List<Place>> =
+        withContext(contextProvider.IO) {
+            try {
+                val response = service.getPlacesByLatLngAsync(latLng.latitude, latLng.longitude).restaurantList?.map {
+                    it.restaurantDto?.parse()!!
+                }
+                if (response != null) Status.Success(response)
+                else Status.Error("")
+
+            } catch (exception: Exception) {
+                Status.Error(exception.message ?: "")
+            }
+        }
 }
