@@ -13,11 +13,13 @@ import org.koin.standalone.StandAloneContext
 lateinit var okHttpClient: OkHttpClient
 
 fun startKoin(myApplication: Application) {
-    StandAloneContext.startKoin(listOf(
-        networkModule,
-        contextModule,
-        providerModule
-    )) with myApplication
+    StandAloneContext.startKoin(
+        listOf(
+            networkModule,
+            contextModule,
+            providerModule
+        )
+    ) with myApplication
 
     okHttpClient = createOkHttpClient()
 }

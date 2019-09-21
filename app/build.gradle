@@ -4,6 +4,8 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
+apply plugin: 'kotlin-kapt'
+
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
@@ -16,6 +18,7 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         buildConfigField("String", "ZOMATO_API_KEY", API_KEY)
+        buildConfigField("String", "ZOMATO_API_VERSION", API_VERSION)
     }
     buildTypes {
         release {
@@ -60,7 +63,10 @@ dependencies {
     implementation "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:0.9.2"
     implementation 'com.squareup.okhttp3:logging-interceptor:3.12.1'
 
-
     //Image Handler
     implementation 'com.squareup.picasso:picasso:2.71828'
+
+    //Maps
+    implementation 'com.google.android.gms:play-services-maps:17.0.0'
+    implementation 'com.google.maps.android:android-maps-utils:0.5'
 }

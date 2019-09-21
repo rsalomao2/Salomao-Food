@@ -49,10 +49,11 @@ class PlaceAdapter(
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(place: Place) {
-            Picasso.get()
-                .load(place.thumb)
-                .placeholder(R.drawable.ic_no_image)
-                .into(binding.ivThumb)
+            if (!place.thumb.isNullOrEmpty())
+                Picasso.get()
+                    .load(place.thumb)
+                    .placeholder(R.drawable.ic_no_image)
+                    .into(binding.ivThumb)
 
             binding.tvName.text = place.name
             binding.tvAddress.text = place.address.getFullAddress()
@@ -64,7 +65,7 @@ class PlaceAdapter(
     }
 
     private fun getDrawableId(priceRange: Int): Int {
-        return when(priceRange){
+        return when (priceRange) {
             1 -> R.drawable.ic_no_image
             2 -> R.drawable.ic_no_image
             3 -> R.drawable.ic_no_image

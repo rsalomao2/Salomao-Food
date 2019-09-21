@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -12,7 +12,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.salomao.R
 import com.salomao.databinding.FragmentPlaceListBinding
 import com.salomao.domain.di.injectFirstKoin
+import com.salomao.domain.extention.hideKeyboard
 import com.salomao.domain.extention.observeEventNotHandled
+import com.salomao.domain.extention.observeIfNotNull
 import com.salomao.domain.extention.toast
 import com.salomao.domain.provider.DrawableProvider
 import com.salomao.presentation.placelist.view.adapter.PlaceAdapter
@@ -24,7 +26,7 @@ class PlaceListFragment : Fragment() {
     private val viewModel by viewModel<PlaceListViewModel>()
     private val drawableProvider by inject<DrawableProvider>()
 
-    private lateinit var binding:FragmentPlaceListBinding
+    private lateinit var binding: FragmentPlaceListBinding
     private val placeAdapter by lazy {
         PlaceAdapter(drawableProvider, viewModel.onItemClick)
     }
@@ -44,23 +46,52 @@ class PlaceListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setRecycleView()
+        setListeners()
         setObservers()
+    }
+
+    private fun setListeners() {
+        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                query?.let {
+                    viewModel.loadPlaceFromQuery(it)
+                }
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {return true}
+
+        })
     }
 
     private fun setObservers() {
         setOnNavToSecondObserver()
         setPlaceListObserver()
         setOnPlaceClickObserver()
+        setErrorMessageObserver()
+        setKeyBoardHideObserver()
+    }
+
+    private fun setKeyBoardHideObserver() {
+        viewModel.hideKeyBoard.observeIfNotNull(viewLifecycleOwner){
+            hideKeyboard()
+        }
+    }
+
+    private fun setErrorMessageObserver() {
+        viewModel.errorMessage.observeEventNotHandled(viewLifecycleOwner){
+            toast(it)
+        }
     }
 
     private fun setOnPlaceClickObserver() {
-        viewModel.currentItemClick.observeEventNotHandled(viewLifecycleOwner){
+        viewModel.currentItemClick.observeEventNotHandled(viewLifecycleOwner) {
             toast(it.name)
         }
     }
 
     private fun setPlaceListObserver() {
-        viewModel.placeList.observeEventNotHandled(viewLifecycleOwner){
+        viewModel.placeList.observeEventNotHandled(viewLifecycleOwner) {
             placeAdapter.addItems(it)
         }
 
@@ -75,7 +106,7 @@ class PlaceListFragment : Fragment() {
     }
 
     private fun setOnNavToSecondObserver() {
-        viewModel.navToSecond.observeEventNotHandled(viewLifecycleOwner){
+        viewModel.navToSecond.observeEventNotHandled(viewLifecycleOwner) {
             findNavController().navigate(R.id.action_firstFragment_to_secondFragment)
         }
     }
