@@ -27,17 +27,20 @@ class PlaceListViewModel(
     val errorMessage = MutableLiveData<Event<String>>()
     val showLoading = mutableLiveData(false)
     val showList = mutableLiveData(false)
+    val showEmptyCard = mutableLiveData(false)
     val hideKeyBoard = mutableLiveData(false)
     val isGpsDenied = MutableLiveData<Event<Boolean>>()
 
+    init {
+        loadPlaceFromGpsLocation()
+    }
+
     fun loadPlaceFromGpsLocation() {
         viewModelScope.launch {
-            showLoading()
             when (val result = gpsUseCase.getUserLocation()) {
                 is Status.Success -> loadPlacesFromLatLng(LatLng(result.response.latitude, result.response.longitude))
                 is Status.Error -> isGpsDenied.value = Event(true)
             }
-            hideLoading()
         }
     }
 
@@ -45,8 +48,11 @@ class PlaceListViewModel(
         viewModelScope.launch {
             showLoading()
             when (val result = repository.loadPlaceFromLocation(latLng)){
-                is Status.Success ->  loadListOnMustable(result)
-                is Status.Error -> errorMessage.value = Event(result.responseError)
+                is Status.Success ->  loadListOnMutable(result)
+                is Status.Error -> {
+                    errorMessage.value = Event(result.responseError)
+                    handlePlaceListView()
+                }
             }
             hideLoading()
         }
@@ -58,11 +64,11 @@ class PlaceListViewModel(
             showLoading()
             when (val result = repository.loadPlaceFromQuery(query)) {
                 is Status.Success -> {
-                    loadListOnMustable(result)
+                    loadListOnMutable(result)
                 }
                 is Status.Error -> {
                     Event(result.responseError)
-                    showList.value = false
+                    handlePlaceListView()
                 }
             }
             hideLoading()
@@ -77,8 +83,13 @@ class PlaceListViewModel(
         showLoading.value = true
     }
 
-    private fun loadListOnMustable(result: Status.Success<List<Place>>) {
+    private fun loadListOnMutable(result: Status.Success<List<Place>>) {
         placeList.value = Event(result.response)
+        handlePlaceListView()
+    }
+
+    private fun handlePlaceListView() {
         showList.value = placeList.value?.peekContent()?.isNotEmpty()
+        showEmptyCard.value = placeList.value?.peekContent()?.isNullOrEmpty()
     }
 }

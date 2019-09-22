@@ -9,7 +9,6 @@ import org.koin.android.ext.koin.with
 import org.koin.dsl.module.module
 import org.koin.standalone.StandAloneContext
 
-
 lateinit var okHttpClient: OkHttpClient
 
 fun startKoin(myApplication: Application) {
@@ -34,5 +33,4 @@ private val contextModule = module {
 
 private val providerModule = module {
     single<StringProvider> { StringProviderImpl(androidContext()) }
-    single<DrawableProvider> { DrawableProviderImpl(androidContext()) }
 }

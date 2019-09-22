@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -18,20 +17,10 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.salomao.R
 import com.salomao.data.pojo.Place
 import com.salomao.databinding.FragmentPlaceDetailBinding
-import com.salomao.domain.di.injectPlaceDetailKoin
-import com.salomao.presentation.placedetail.adapter.PlaceMenuAdapter
 import com.salomao.presentation.placelist.PlaceListFragment.Companion.ARGS_PLACE
-import org.koin.android.viewmodel.ext.android.viewModel
 
 class PlaceDetailFragment : Fragment(), OnMapReadyCallback {
 
-    private val viewModel by viewModel<PlaceDetailViewModel>()
-
-    private val placeMenuAdapter by lazy {
-        PlaceMenuAdapter(
-            viewModel.onItemClick
-        )
-    }
     private lateinit var binding: FragmentPlaceDetailBinding
     private lateinit var mMap: GoogleMap
 
@@ -40,7 +29,6 @@ class PlaceDetailFragment : Fragment(), OnMapReadyCallback {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        injectPlaceDetailKoin()
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_place_detail, container, false)
         binding.lifecycleOwner = this
 
@@ -50,7 +38,6 @@ class PlaceDetailFragment : Fragment(), OnMapReadyCallback {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setRecycleView()
         setMap()
         getPlace()?.let {
             binding.place = it
@@ -93,13 +80,4 @@ class PlaceDetailFragment : Fragment(), OnMapReadyCallback {
             setCamera(position)
         }
     }
-
-    private fun setRecycleView() {
-        binding.recyclerView.apply {
-            layoutManager = LinearLayoutManager(this.context)
-            setHasFixedSize(true)
-            adapter = placeMenuAdapter
-        }
-    }
-
 }

@@ -6,10 +6,6 @@
     <data>
 
         <variable
-            name="viewModel"
-            type="com.salomao.presentation.placedetail.PlaceDetailViewModel" />
-
-        <variable
             name="place"
             type="com.salomao.data.pojo.Place" />
     </data>
@@ -36,21 +32,12 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:loadImage="@{place.thumb}" />
 
-<!--            TODO: Colocar um swipe refresh aqui para paginacao-->
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerView"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageView" />
-
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/view"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:background="@color/colorBlackTransparent"
-                app:layout_constraintBottom_toTopOf="@+id/recyclerView"
+                app:layout_constraintBottom_toBottomOf="@+id/imageView"
                 app:layout_constraintEnd_toEndOf="@+id/imageView"
                 app:layout_constraintStart_toStartOf="parent">
 
@@ -101,7 +88,7 @@
                     app:layout_constraintEnd_toEndOf="@+id/textView2"
                     app:layout_constraintTop_toBottomOf="@+id/textView2"
                     app:loadPriceRangeImage="@{place.priceRange}"
-                    tools:srcCompat="@tools:sample/avatars" />
+                    tools:srcCompat="@drawable/ic_dollar_symbol" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <fragment
@@ -114,7 +101,7 @@
                 android:layout_marginEnd="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/recyclerView" />
+                app:layout_constraintTop_toBottomOf="@+id/imageView" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 </layout>

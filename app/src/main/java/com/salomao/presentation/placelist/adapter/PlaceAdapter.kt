@@ -2,18 +2,17 @@ package com.salomao.presentation.placelist.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.salomao.R
 import com.salomao.data.pojo.Place
 import com.salomao.databinding.LayoutPlaceListItemBinding
-import com.salomao.domain.provider.DrawableProvider
 import com.squareup.picasso.MemoryPolicy
 import com.squareup.picasso.NetworkPolicy
 import com.squareup.picasso.Picasso
 
 class PlaceAdapter(
-    private val drawableProvider: DrawableProvider,
     private val onItemClick: (Place) -> (Unit)
 ) : RecyclerView.Adapter<PlaceAdapter.MyViewHolder>() {
 
@@ -62,18 +61,18 @@ class PlaceAdapter(
 
             binding.tvName.text = place.name
             binding.tvAddress.text = place.address.getFullAddress()
-            //TODO: Load image as per price range
-            binding.ivPriceRange.setImageDrawable(drawableProvider.getDrawable(getDrawableId(place.priceRange)))
+            binding.ivPriceRange.setColorFilter(getColor(place.priceRange))
             binding.ratinBar.rating = place.rate
             binding.container.setOnClickListener { onItemClick(place) }
         }
-        private fun getDrawableId(priceRange: Int): Int {
+
+        private fun getColor(priceRange: Int): Int {
             return when (priceRange) {
-                1 -> R.drawable.ic_no_image
-                2 -> R.drawable.ic_no_image
-                3 -> R.drawable.ic_no_image
-                4 -> R.drawable.ic_no_image
-                else -> R.drawable.ic_no_image
+                1 -> ContextCompat.getColor(binding.root.context, R.color.colorPriceRed)
+                2 -> ContextCompat.getColor(binding.root.context, R.color.colorPriceOrange)
+                3 -> ContextCompat.getColor(binding.root.context, R.color.colorPriceYellow)
+                4 -> ContextCompat.getColor(binding.root.context, R.color.colorPriceGreen)
+                else -> ContextCompat.getColor(binding.root.context, R.color.colorPriceRed)
             }
         }
     }

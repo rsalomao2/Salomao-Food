@@ -20,19 +20,15 @@ import com.salomao.domain.extention.hideKeyboard
 import com.salomao.domain.extention.observeEventNotHandled
 import com.salomao.domain.extention.observeIfNotNull
 import com.salomao.domain.extention.toast
-import com.salomao.domain.provider.DrawableProvider
 import com.salomao.presentation.placelist.adapter.PlaceAdapter
-import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class PlaceListFragment : Fragment() {
 
     private val viewModel by viewModel<PlaceListViewModel>()
-    private val drawableProvider by inject<DrawableProvider>()
 
     private val placeAdapter by lazy {
         PlaceAdapter(
-            drawableProvider,
             viewModel.onItemClick
         )
     }
@@ -50,7 +46,6 @@ class PlaceListFragment : Fragment() {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_place_list, container, false)
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
-
         return binding.root
     }
 
@@ -59,7 +54,6 @@ class PlaceListFragment : Fragment() {
         setRecycleView()
         setListeners()
         setObservers()
-        viewModel.loadPlaceFromGpsLocation()
     }
 
     private fun setListeners() {

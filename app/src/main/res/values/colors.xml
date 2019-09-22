@@ -8,4 +8,10 @@
     <color name="colorBorderGray">#969696</color>
     <color name="colorBlackTransparent">#4D000000</color>
     <color name="colorTextWhite">#FFF</color>
+
+    <!--    Color Price Range-->
+    <color name="colorPriceRed">#D81B60</color>
+    <color name="colorPriceOrange">#FF9F00</color>
+    <color name="colorPriceYellow">#FFCB00</color>
+    <color name="colorPriceGreen">#00FF06</color>
 </resources>
