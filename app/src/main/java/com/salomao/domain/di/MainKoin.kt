@@ -15,7 +15,6 @@ fun startKoin(myApplication: Application) {
     StandAloneContext.startKoin(
         listOf(
             networkModule,
-            contextModule,
             providerModule
         )
     ) with myApplication
@@ -25,10 +24,6 @@ fun startKoin(myApplication: Application) {
 
 private val networkModule = module {
     single { okHttpClient }
-}
-
-private val contextModule = module {
-    single<CoroutineContextProvider> { CoroutineContextProviderImpl() }
 }
 
 private val providerModule = module {

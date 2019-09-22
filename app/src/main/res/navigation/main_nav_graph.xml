@@ -8,8 +8,8 @@
     <fragment
         android:id="@+id/firstFragment"
         android:name="com.salomao.presentation.placelist.PlaceListFragment"
-        android:label="fragment_first"
-        tools:layout="@layout/fragment_place_list" >
+        android:label="Place List"
+        tools:layout="@layout/fragment_place_list">
         <action
             android:id="@+id/action_PlaceListFragment_to_placeDetailFragment"
             app:destination="@id/secondFragment" />
@@ -17,6 +17,6 @@
     <fragment
         android:id="@+id/secondFragment"
         android:name="com.salomao.presentation.placedetail.PlaceDetailFragment"
-        android:label="fragment_second"
+        android:label="Place Detail"
         tools:layout="@layout/fragment_place_detail" />
 </navigation>
