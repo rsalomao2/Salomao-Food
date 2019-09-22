@@ -5,6 +5,7 @@ import com.salomao.data.pojo.Address
 import com.salomao.data.pojo.Place
 
 data class RestaurantDto(
+    @SerializedName("id") var id: String?,
     @SerializedName("name") var name: String?,
     @SerializedName("location") var locationDto: LocationDto?,
     @SerializedName("price_range") var priceRange: String?,
@@ -15,17 +16,18 @@ data class RestaurantDto(
 ) {
     fun parse(): Place {
         return Place(
-            name = name?: "",
+            id = id?.toInt() ?: -1,
+            name = name ?: "",
             thumb = thumb,
-            rate = userRating?.rating?.toFloat()?: 0.0f,
-            currency = currency?:"",
-            priceRange = priceRange?.toInt()?: 0,
-            phone = phone?: "",
+            rate = userRating?.rating?.toFloat() ?: 0.0f,
+            currency = currency ?: "",
+            priceRange = priceRange?.toInt() ?: 0,
+            phone = phone ?: "",
             address = Address(
-                street = locationDto?.address?: "",
-                cityName = locationDto?.city?: "",
-                latitude = locationDto?.latitude?.toDouble()?: 0.0,
-                longitude = locationDto?.longitude?.toDouble()?: 0.0
+                street = locationDto?.address ?: "",
+                cityName = locationDto?.city ?: "",
+                latitude = locationDto?.latitude?.toDouble() ?: 0.0,
+                longitude = locationDto?.longitude?.toDouble() ?: 0.0
             )
         )
     }

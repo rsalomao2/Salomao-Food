@@ -1,4 +1,4 @@
-package com.salomao.presentation.placelist.view.adapter
+package com.salomao.presentation.placelist.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -8,6 +8,8 @@ import com.salomao.R
 import com.salomao.data.pojo.Place
 import com.salomao.databinding.LayoutPlaceListItemBinding
 import com.salomao.domain.provider.DrawableProvider
+import com.squareup.picasso.MemoryPolicy
+import com.squareup.picasso.NetworkPolicy
 import com.squareup.picasso.Picasso
 
 class PlaceAdapter(
@@ -49,14 +51,18 @@ class PlaceAdapter(
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(place: Place) {
+            //TODO: Make image update when list update
             if (!place.thumb.isNullOrEmpty())
                 Picasso.get()
                     .load(place.thumb)
                     .placeholder(R.drawable.ic_no_image)
+                    .memoryPolicy(MemoryPolicy.NO_CACHE)
+                    .networkPolicy(NetworkPolicy.NO_CACHE)
                     .into(binding.ivThumb)
 
             binding.tvName.text = place.name
             binding.tvAddress.text = place.address.getFullAddress()
+            //TODO: Load image as per price range
             binding.ivPriceRange.setImageDrawable(drawableProvider.getDrawable(getDrawableId(place.priceRange)))
             binding.ratinBar.rating = place.rate
             binding.container.setOnClickListener { onItemClick(place) }

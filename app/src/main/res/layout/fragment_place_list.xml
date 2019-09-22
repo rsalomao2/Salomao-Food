@@ -7,7 +7,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.salomao.presentation.placelist.view.PlaceListViewModel" />
+            type="com.salomao.presentation.placelist.PlaceListViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

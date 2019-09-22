@@ -1,4 +1,4 @@
-package com.salomao.presentation.placelist.view
+package com.salomao.presentation.placelist
 
 import android.Manifest
 import android.content.pm.PackageManager
@@ -8,19 +8,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
+import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.salomao.R
 import com.salomao.databinding.FragmentPlaceListBinding
-import com.salomao.domain.di.injectFirstKoin
+import com.salomao.domain.di.injectPlaceListKoin
 import com.salomao.domain.extention.hideKeyboard
 import com.salomao.domain.extention.observeEventNotHandled
 import com.salomao.domain.extention.observeIfNotNull
 import com.salomao.domain.extention.toast
 import com.salomao.domain.provider.DrawableProvider
-import com.salomao.presentation.placelist.view.adapter.PlaceAdapter
+import com.salomao.presentation.placelist.adapter.PlaceAdapter
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -30,10 +31,14 @@ class PlaceListFragment : Fragment() {
     private val drawableProvider by inject<DrawableProvider>()
 
     private val placeAdapter by lazy {
-        PlaceAdapter(drawableProvider, viewModel.onItemClick)
+        PlaceAdapter(
+            drawableProvider,
+            viewModel.onItemClick
+        )
     }
     companion object{
         const val PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1
+        const val ARGS_PLACE = "argsPlace"
     }
     private lateinit var binding: FragmentPlaceListBinding
 
@@ -41,7 +46,7 @@ class PlaceListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        injectFirstKoin()
+        injectPlaceListKoin()
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_place_list, container, false)
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
@@ -121,7 +126,8 @@ class PlaceListFragment : Fragment() {
 
     private fun setOnPlaceClickObserver() {
         viewModel.currentItemClick.observeEventNotHandled(viewLifecycleOwner) {
-            toast(it.name)
+            val bundle = bundleOf(Pair(ARGS_PLACE, it))
+            findNavController().navigate(R.id.action_PlaceListFragment_to_placeDetailFragment,bundle)
         }
     }
 
@@ -142,7 +148,7 @@ class PlaceListFragment : Fragment() {
 
     private fun setOnNavToSecondObserver() {
         viewModel.navToSecond.observeEventNotHandled(viewLifecycleOwner) {
-            findNavController().navigate(R.id.action_firstFragment_to_secondFragment)
+            findNavController().navigate(R.id.action_PlaceListFragment_to_placeDetailFragment)
         }
     }
 

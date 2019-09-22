@@ -1,4 +1,4 @@
-package com.salomao.presentation.placelist.view
+package com.salomao.presentation.placelist
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
