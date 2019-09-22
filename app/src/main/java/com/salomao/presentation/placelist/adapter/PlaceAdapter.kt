@@ -8,8 +8,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.salomao.R
 import com.salomao.data.pojo.Place
 import com.salomao.databinding.LayoutPlaceListItemBinding
-import com.squareup.picasso.MemoryPolicy
-import com.squareup.picasso.NetworkPolicy
 import com.squareup.picasso.Picasso
 
 class PlaceAdapter(
@@ -50,14 +48,7 @@ class PlaceAdapter(
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(place: Place) {
-            //TODO: Make image update when list update
-            if (!place.thumb.isNullOrEmpty())
-                Picasso.get()
-                    .load(place.thumb)
-                    .placeholder(R.drawable.ic_no_image)
-                    .memoryPolicy(MemoryPolicy.NO_CACHE)
-                    .networkPolicy(NetworkPolicy.NO_CACHE)
-                    .into(binding.ivThumb)
+            loadThumbnail(place)
 
             binding.tvName.text = place.name
             binding.tvAddress.text = place.address.getFullAddress()
@@ -66,12 +57,27 @@ class PlaceAdapter(
             binding.container.setOnClickListener { onItemClick(place) }
         }
 
+        private fun loadThumbnail(place: Place) {
+            if (place.thumb.isNullOrEmpty()) {
+                Picasso.get()
+                    .load(R.drawable.ic_no_image)
+                    .placeholder(R.drawable.ic_no_image)
+                    .error(R.drawable.ic_no_image)
+                    .into(binding.ivThumb)
+            } else
+                Picasso.get()
+                    .load(place.thumb)
+                    .placeholder(R.drawable.ic_no_image)
+                    .error(R.drawable.ic_no_image)
+                    .into(binding.ivThumb)
+        }
+
         private fun getColor(priceRange: Int): Int {
             return when (priceRange) {
-                1 -> ContextCompat.getColor(binding.root.context, R.color.colorPriceRed)
-                2 -> ContextCompat.getColor(binding.root.context, R.color.colorPriceOrange)
-                3 -> ContextCompat.getColor(binding.root.context, R.color.colorPriceYellow)
-                4 -> ContextCompat.getColor(binding.root.context, R.color.colorPriceGreen)
+                4 -> ContextCompat.getColor(binding.root.context, R.color.colorPriceRed)
+                3 -> ContextCompat.getColor(binding.root.context, R.color.colorPriceOrange)
+                2 -> ContextCompat.getColor(binding.root.context, R.color.colorPriceYellow)
+                1 -> ContextCompat.getColor(binding.root.context, R.color.colorPriceGreen)
                 else -> ContextCompat.getColor(binding.root.context, R.color.colorPriceRed)
             }
         }

@@ -1,7 +1,9 @@
 package com.salomao.domain.extention
 
+import android.content.Context
 import android.view.View
 import android.widget.ImageView
+import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import com.salomao.R
 import com.squareup.picasso.Picasso
@@ -22,17 +24,17 @@ fun setImageFromSource(view: ImageView, source: String?) {
 
 }
 
-@BindingAdapter("app:loadPriceRangeImage")
-fun setImageFromRange(view: ImageView, range: Int?) {
-    view.setImageDrawable(view.context.getDrawable(getSource(range)))
+@BindingAdapter("app:colorByPriceRange")
+fun setColorFromRange(view: ImageView, range: Int?) {
+    view.setColorFilter(getColor(view.context, range))
 }
 
-private fun getSource(range: Int?): Int {
-    return when (range) {
-        1 -> R.drawable.ic_no_image
-        2 -> R.drawable.ic_no_image
-        3 -> R.drawable.ic_no_image
-        4 -> R.drawable.ic_no_image
-        else -> R.drawable.ic_no_image
+private fun getColor(context: Context, priceRange: Int?): Int {
+    return when (priceRange) {
+        4 -> ContextCompat.getColor(context, R.color.colorPriceRed)
+        3 -> ContextCompat.getColor(context, R.color.colorPriceOrange)
+        2 -> ContextCompat.getColor(context, R.color.colorPriceYellow)
+        1 -> ContextCompat.getColor(context, R.color.colorPriceGreen)
+        else -> ContextCompat.getColor(context, R.color.colorPriceRed)
     }
 }
