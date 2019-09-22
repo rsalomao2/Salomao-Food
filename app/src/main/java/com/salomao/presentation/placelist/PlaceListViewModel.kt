@@ -9,10 +9,15 @@ import com.salomao.data.pojo.Place
 import com.salomao.data.pojo.Status
 import com.salomao.data.repository.PlaceRepository
 import com.salomao.domain.extention.mutableLiveData
+import com.salomao.domain.provider.CoroutineContextProvider
 import com.salomao.domain.usecase.GPSUseCase
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.launch
 
 class PlaceListViewModel(
+    contextProvider: CoroutineContextProvider,
     private val repository: PlaceRepository,
     private val gpsUseCase: GPSUseCase
 ) : ViewModel() {
@@ -20,10 +25,12 @@ class PlaceListViewModel(
     val onItemClick: (Place) -> (Unit) = {
         currentItemClick.value = Event(it)
     }
+    private val supervisorJob = SupervisorJob()
+    private val uiScope = CoroutineScope(contextProvider.MAIN + supervisorJob)
 
     val currentItemClick = MutableLiveData<Event<Place>>()
     val placeList = MutableLiveData<Event<List<Place>>>()
-    val navToSecond = MutableLiveData<Event<Boolean>>()
+    val navToPlaceDetail = MutableLiveData<Event<Boolean>>()
     val errorMessage = MutableLiveData<Event<String>>()
     val showLoading = mutableLiveData(false)
     val showList = mutableLiveData(false)
@@ -36,7 +43,7 @@ class PlaceListViewModel(
     }
 
     fun loadPlaceFromGpsLocation() {
-        viewModelScope.launch {
+        uiScope.launch {
             when (val result = gpsUseCase.getUserLocation()) {
                 is Status.Success -> loadPlacesFromLatLng(LatLng(result.response.latitude, result.response.longitude))
                 is Status.Error -> isGpsDenied.value = Event(true)
@@ -45,7 +52,7 @@ class PlaceListViewModel(
     }
 
     private fun loadPlacesFromLatLng(latLng: LatLng) {
-        viewModelScope.launch {
+        uiScope.launch {
             showLoading()
             when (val result = repository.loadPlaceFromLocation(latLng)){
                 is Status.Success ->  loadListOnMutable(result)
@@ -59,7 +66,7 @@ class PlaceListViewModel(
     }
 
     fun loadPlacesFromQuery(query: String) {
-        viewModelScope.launch {
+        uiScope.launch {
             hideKeyBoard.value = true
             showLoading()
             when (val result = repository.loadPlaceFromQuery(query)) {
@@ -91,5 +98,10 @@ class PlaceListViewModel(
     private fun handlePlaceListView() {
         showList.value = placeList.value?.peekContent()?.isNotEmpty()
         showEmptyCard.value = placeList.value?.peekContent()?.isNullOrEmpty()
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        uiScope.coroutineContext.cancelChildren()
     }
 }

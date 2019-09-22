@@ -71,7 +71,7 @@ class PlaceListFragment : Fragment() {
     }
 
     private fun setObservers() {
-        setOnNavToSecondObserver()
+        setOnNavToPlaceDetailObserver()
         setPlaceListObserver()
         setOnPlaceClickObserver()
         setErrorMessageObserver()
@@ -140,10 +140,9 @@ class PlaceListFragment : Fragment() {
         }
     }
 
-    private fun setOnNavToSecondObserver() {
-        viewModel.navToSecond.observeEventNotHandled(viewLifecycleOwner) {
+    private fun setOnNavToPlaceDetailObserver() {
+        viewModel.navToPlaceDetail.observeEventNotHandled(viewLifecycleOwner) {
             findNavController().navigate(R.id.action_PlaceListFragment_to_placeDetailFragment)
         }
     }
-
 }

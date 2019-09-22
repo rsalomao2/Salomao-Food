@@ -33,4 +33,5 @@ private val contextModule = module {
 
 private val providerModule = module {
     single<StringProvider> { StringProviderImpl(androidContext()) }
+    single<CoroutineContextProvider> { CoroutineContextProviderImpl() }
 }

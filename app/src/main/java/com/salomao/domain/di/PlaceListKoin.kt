@@ -28,7 +28,8 @@ private val viewModelModule: Module = module {
     viewModel {
         PlaceListViewModel(
             repository = get(),
-            gpsUseCase = get()
+            gpsUseCase = get(),
+            contextProvider = get()
         )
     }
 }
